@@ -24,6 +24,9 @@ import (
 )
 
 func main() {
+	// Starting a timer so we can display execution time when done.
+	start := time.Now()
+
 	// Check length of os.Args.   First arg should be the actual command, the second is the one argument we accept.
 	if len(os.Args) != 2 {
 		fmt.Println("Need an argument on how many rolls of how many sided dice.   Like, to roll 100 20-sided dice, use '100d20'")
@@ -97,5 +100,5 @@ func main() {
 		total += <-totalsCh
 	}
 
-	fmt.Printf("Rolled %d from %d rolls across %d goroutines\n", total, numRolls, numCPUs)
+	fmt.Printf("Rolled %d from %d rolls across %d goroutines in %v\n", total, numRolls, numCPUs, time.Since(start))
 }
