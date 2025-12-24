@@ -22,6 +22,11 @@ import (
 	"strings"
 )
 
+type RollResults struct {
+	Sum         int
+	Occurrences int
+}
+
 var repeatTimes int
 var sortType string
 
@@ -81,6 +86,7 @@ func performRolls(numRolls, dieSize int) int {
 
 func sortMap(resultsTable map[int]int, sortType string) {
 	keys := make([]int, 0, 0)
+	values := make([]RollResults, 0, 0)
 	switch sortType {
 	case "sum":
 		for key := range resultsTable {
@@ -90,6 +96,17 @@ func sortMap(resultsTable map[int]int, sortType string) {
 		fmt.Println("Sum,Occurrences")
 		for _, key := range keys {
 			fmt.Printf("%d,%d\n", key, resultsTable[key])
+		}
+	case "count":
+		for key, value := range resultsTable {
+			values = append(values, RollResults{key, value})
+		}
+		sort.Slice(values, func(i, j int) bool {
+			return values[i].Occurrences > values[j].Occurrences
+		})
+		fmt.Println("Sum,Occurrences")
+		for _, value := range values {
+			fmt.Printf("%d,%d\n", value.Sum, value.Occurrences)
 		}
 	default:
 		fmt.Printf("Unsupported sort type %s\n", sortType)
